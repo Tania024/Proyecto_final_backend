@@ -52,14 +52,66 @@ public class GestionDatos {
 		Producto producto = new Producto();
 		producto.setPro_codigo(1);
 		producto.setPro_fecha_registro(null);
-		producto.setPro_imagen(null);
+		producto.setPro_imagen("assets/CHOMPA.jpeg");
 		producto.setPro_iva(12);
-		producto.setPro_nombre("Mortadela");
-		producto.setPro_precio(12.4);
-		producto.setPro_stock(13);
-		//producto.setDetallesFactura(null);
-		
+		producto.setPro_nombre("Chompa verde ");
+		producto.setPro_precio(19.14);
+		producto.setPro_stock(1);
 		daoProducto.insert(producto);
+		
+		Producto producto1 = new Producto();
+		producto1.setPro_codigo(2);
+		producto1.setPro_fecha_registro(null);
+		producto1.setPro_imagen("assets/CAMISETA.jpeg");
+		producto1.setPro_iva(12);
+		producto1.setPro_nombre("Camiseta de hombre para primavera");
+		producto1.setPro_precio(23.99);
+		producto1.setPro_stock(8);
+		daoProducto.insert(producto1);
+		
+		Producto producto2 = new Producto();
+		producto2.setPro_codigo(3);
+		producto2.setPro_fecha_registro(null);
+		producto2.setPro_imagen("assets/FALDA.jpeg");
+		producto2.setPro_iva(12);
+		producto2.setPro_nombre("Falda");
+		producto2.setPro_precio(33.40);
+		producto2.setPro_stock(3);
+		daoProducto.insert(producto2);
+		
+		Producto producto3 = new Producto();
+		producto3.setPro_codigo(4);
+		producto3.setPro_fecha_registro(null);
+		producto3.setPro_imagen("assets/VESTIDO.jpeg");
+		producto3.setPro_iva(12);
+		producto3.setPro_nombre("Vestido verde con tiritas para la playa");
+		producto3.setPro_precio(40.12);
+		producto3.setPro_stock(3);
+		//producto.setDetallesFactura(null);
+		daoProducto.insert(producto3);
+		
+		Producto producto4 = new Producto();
+		producto4.setPro_codigo(5);
+		producto4.setPro_fecha_registro(null);
+		producto4.setPro_imagen("assets/SHORT.jpeg");
+		producto4.setPro_iva(12);
+		producto4.setPro_nombre("Short color azul marino");
+		producto4.setPro_precio(4.12);
+		producto4.setPro_stock(3);
+		daoProducto.insert(producto4);
+		
+		Producto producto5 = new Producto();
+		producto5.setPro_codigo(6);
+		producto5.setPro_fecha_registro(null);
+		producto5.setPro_imagen("assets/BOLERO.jpeg");
+		producto5.setPro_iva(12);
+		producto5.setPro_nombre("bolero blanco con fresitas");
+		producto5.setPro_precio(15.99);
+		producto5.setPro_stock(5);
+		
+		daoProducto.insert(producto5);
+		
+		
 		
 		CabeceraFactura cabecera = new CabeceraFactura();
 		cabecera.setCab_codigo(1);
