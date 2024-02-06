@@ -2,7 +2,9 @@ package ups.edu.ec.proyecto_final.services;
 
 import java.util.List;
 
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.inject.Named;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
@@ -18,6 +20,8 @@ import ups.edu.ec.proyecto_final.business.GestionCliente;
 import ups.edu.ec.proyecto_final.model.Cliente;
 
 @Path("clientes")
+@Named
+@ApplicationScoped
 public class ClienteServices {
 
     @Inject
@@ -28,23 +32,7 @@ public class ClienteServices {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response crear(Cliente cliente) {
         try {
-            Cliente existingCliente = gCliente.getPorCodigo(cliente.getCli_cedula());
-            
-            if (existingCliente != null) {
-                // Cliente existente, actualizar
-                existingCliente.setCli_nombre(cliente.getCli_nombre());
-                existingCliente.setCli_apellido(cliente.getCli_apellido());
-                existingCliente.setCli_direccion(cliente.getCli_direccion());
-                existingCliente.setCli_telefono(cliente.getCli_telefono());
-                existingCliente.setCli_estado(cliente.getCli_estado());
-                existingCliente.setCli_usuario(cliente.getCli_usuario());
-                existingCliente.setCli_contrasena(cliente.getCli_contrasena());
-                gCliente.actualizarCliente(existingCliente);
-            } else {
-                // Nuevo cliente, guardar
-                gCliente.guardarClientes(cliente);
-            }
-            
+            gCliente.guardarClientes(cliente);
             return Response.ok(cliente).build();
         } catch (Exception e) {
             ErrorMessage error = new ErrorMessage(99, e.getMessage());
@@ -70,42 +58,36 @@ public class ClienteServices {
     }
 
     @DELETE
-    @Produces(MediaType.APPLICATION_JSON)
-    public String borrar(@QueryParam("id") int cli_codigo) {
+	@Path("elim/{cli_codigo}")
+    public Response borrar(@PathParam("cli_codigo") int cli_codigo) {
         try {
             gCliente.borrarCliente(cli_codigo);
-            return "OK";
+            return Response.ok("OK").build();
         } catch (Exception e) {
-            return "Error";
-        }
-    }
-
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response leer(@QueryParam("dni") String cli_cedula, @QueryParam("nombre") String cli_nombre) {
-        try {
-            System.out.println("cedula " +  cli_cedula + " nom=" + cli_nombre);
-            Cliente cli = gCliente.getPorCodigo(cli_cedula);
-            return Response.ok(cli).build();
-        } catch (Exception e) {
-            ErrorMessage error = new ErrorMessage(4, "Cliente no existe");
-            return Response.status(Response.Status.NOT_FOUND)
+            ErrorMessage error = new ErrorMessage(99, e.getMessage());
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity(error)
                     .build();
         }
     }
 
     @GET
-    @Path("{dni}/{nombre}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response leer2(@PathParam("dni") String cli_cedula, @PathParam("nombre") String cli_nombre) {
+    @Path("/{cli_usuario}")
+    public Response leer(@PathParam("cli_usuario") String cli_usuario) {
         try {
-            System.out.println("cedula " +  cli_cedula + " nom=" + cli_nombre);
-            Cliente cli = gCliente.getPorCodigo(cli_cedula);
-            return Response.ok(cli).build();
+            Cliente cli = gCliente.getPorUsuario(cli_usuario);
+            if (cli != null) {
+                return Response.ok(cli).build();
+            } else {
+                ErrorMessage error = new ErrorMessage(4, "Cliente no existe");
+                return Response.status(Response.Status.NOT_FOUND)
+                        .entity(error)
+                        .build();
+            }
         } catch (Exception e) {
-            ErrorMessage error = new ErrorMessage(4, "Cliente no existe");
-            return Response.status(Response.Status.NOT_FOUND)
+            ErrorMessage error = new ErrorMessage(99, e.getMessage());
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity(error)
                     .build();
         }
@@ -115,13 +97,21 @@ public class ClienteServices {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("list")
     public Response getClientes() {
-        List<Cliente> clientes = gCliente.getClientes();
-        if (clientes.size() > 0)
-            return Response.ok(clientes).build();
-
-        ErrorMessage error = new ErrorMessage(6, "No se registran clientes");
-        return Response.status(Response.Status.NOT_FOUND)
-                .entity(error)
-                .build();
+        try {
+            List<Cliente> clientes = gCliente.getClientes();
+            if (!clientes.isEmpty()) {
+                return Response.ok(clientes).build();
+            } else {
+                ErrorMessage error = new ErrorMessage(6, "No se registran clientes");
+                return Response.status(Response.Status.NOT_FOUND)
+                        .entity(error)
+                        .build();
+            }
+        } catch (Exception e) {
+            ErrorMessage error = new ErrorMessage(99, e.getMessage());
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity(error)
+                    .build();
+        }
     }
 }

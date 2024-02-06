@@ -36,7 +36,7 @@ public class CabeceraFacturaDAO implements Serializable {
     public List<CabeceraFactura> getAll() {
         try {
             // Se asume que CabeceraFactura tiene una relación con Cliente y Cliente tiene un campo cli_estado.
-            String jpql = "SELECT c FROM CabeceraFactura c JOIN c.cliente cl WHERE cl.cli_estado = 'activo'";
+            String jpql = "SELECT c FROM CabeceraFactura c JOIN c.cliente cl WHERE cl.cli_estado = 'Activo'";
             Query q = em.createQuery(jpql, CabeceraFactura.class);
             return q.getResultList();
         } catch (Exception e) {

@@ -21,8 +21,8 @@ public class Producto implements Serializable {
     private double pro_precio;
     private double pro_iva;
 
-    @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL)
-    private List<DetalleFactura> detallesFactura;
+    /*@OneToMany(mappedBy = "producto", cascade = CascadeType.ALL)
+    private List<DetalleFactura> detallesFactura;*/
 
     public int getPro_codigo() {
         return pro_codigo;
@@ -80,7 +80,7 @@ public class Producto implements Serializable {
         this.pro_iva = pro_iva;
     }
 
-    public List<DetalleFactura> getDetallesFactura() {
+    /*public List<DetalleFactura> getDetallesFactura() {
         return detallesFactura;
     }
 
@@ -92,12 +92,12 @@ public class Producto implements Serializable {
     public void agregarDetalleFactura(DetalleFactura detalle) {
         this.detallesFactura.add(detalle);
         detalle.setProducto(this);
-    }
+    }*/
 
     @Override
     public String toString() {
         return "Producto [pro_codigo=" + pro_codigo + ", pro_fecha_registro=" + pro_fecha_registro + ", pro_nombre="
-                + pro_nombre + ", pro_stock=" + pro_stock + ", pro_estado=" + ", pro_imagen=" + pro_imagen
+                + pro_nombre + ", pro_stock=" + pro_stock + ", pro_imagen=" + pro_imagen
                 + ", pro_precio=" + pro_precio + ", pro_iva=" + pro_iva + "]";
     }
 }

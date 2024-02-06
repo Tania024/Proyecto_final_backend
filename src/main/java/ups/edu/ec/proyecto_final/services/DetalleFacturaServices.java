@@ -2,13 +2,16 @@ package ups.edu.ec.proyecto_final.services;
 
 import java.util.List;
 
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.inject.Named;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
@@ -17,6 +20,8 @@ import ups.edu.ec.proyecto_final.business.GestionDetalleFactura;
 import ups.edu.ec.proyecto_final.model.DetalleFactura;
 
 @Path("detalleFacturas")
+@Named
+@ApplicationScoped
 public class DetalleFacturaServices {
 
     @Inject
@@ -65,7 +70,8 @@ public class DetalleFacturaServices {
 
     @DELETE
     @Produces(MediaType.APPLICATION_JSON)
-    public String borrar(@QueryParam("id") int det_codigo) {
+	@Path("elim/{det_codigo}")
+    public String borrar(@PathParam("det_codigo") int det_codigo) {
         try {
             gDetalleFactura.borrarDetalleFactura(det_codigo);
             return "OK";
@@ -76,7 +82,8 @@ public class DetalleFacturaServices {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response leer(@QueryParam("codigo") int det_codigo) {
+    @Path("/{det_codigo}")
+    public Response leer(@PathParam("det_codigo") int det_codigo) {
         try {
             DetalleFactura detalleFactura = gDetalleFactura.getDetalleFacturaPorCodigo(det_codigo);
             return Response.ok(detalleFactura).build();

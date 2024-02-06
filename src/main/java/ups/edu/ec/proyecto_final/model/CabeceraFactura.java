@@ -22,8 +22,8 @@ public class CabeceraFactura implements Serializable {
     @ManyToOne
     private Cliente cliente;
 
-    @OneToMany(mappedBy = "cabeceraFactura")
-    private List<DetalleFactura> detalles;
+    /*@OneToMany(mappedBy = "cabeceraFactura")
+    private List<DetalleFactura> detalles;*/
 
     public int getCab_codigo() {
         return cab_codigo;
@@ -73,7 +73,7 @@ public class CabeceraFactura implements Serializable {
         this.cliente = cliente;
     }
 
-    public List<DetalleFactura> getDetalles() {
+    /*public List<DetalleFactura> getDetalles() {
         return detalles;
     }
 
@@ -85,11 +85,11 @@ public class CabeceraFactura implements Serializable {
     public void agregarDetalle(DetalleFactura detalle) {
         this.detalles.add(detalle);
         detalle.setCabeceraFactura(this);
-    }
+    }*/
 
     @Override
     public String toString() {
         return "CabeceraFactura [cab_codigo=" + cab_codigo + ", cab_fecha=" + cab_fecha + ", cab_subtotal="
-                + cab_subtotal + ", cab_iva=" + cab_iva + ", cab_total=" + cab_total + ", detalles=" + detalles + "]";
+                + cab_subtotal + ", cab_iva=" + cab_iva + ", cab_total=" + cab_total + "]";
     }
 }

@@ -57,20 +57,9 @@ public class GestionDatos {
 		producto.setPro_nombre("Mortadela");
 		producto.setPro_precio(12.4);
 		producto.setPro_stock(13);
-		producto.setDetallesFactura(null);
+		//producto.setDetallesFactura(null);
 		
 		daoProducto.insert(producto);
-		
-		DetalleFactura detalle = new DetalleFactura();
-		detalle.setDet_codigo(1);
-		detalle.setDet_cantidad(2);
-		detalle.setDet_precio(13);
-		detalle.setDet_subtotal(20);
-		detalle.setProducto(null);
-		detalle.setCliente(cliente);
-		detalle.setCabeceraFactura(null);
-		
-		daoDetalleFactura.insert(detalle);
 		
 		CabeceraFactura cabecera = new CabeceraFactura();
 		cabecera.setCab_codigo(1);
@@ -79,9 +68,20 @@ public class GestionDatos {
 		cabecera.setCab_subtotal(20);
 		cabecera.setCab_total(23);
 		cabecera.setCliente(cliente);
-		cabecera.setDetalles(null);
+		//cabecera.setDetalles(null);
 		
 		daoCabeceraFactura.insert(cabecera);
+		DetalleFactura detalle = new DetalleFactura();
+		detalle.setDet_codigo(1);
+		detalle.setDet_cantidad(2);
+		detalle.setDet_precio(13);
+		detalle.setDet_subtotal(20);
+		detalle.setProducto(producto);
+		detalle.setCliente(cliente);
+		detalle.setCabeceraFactura(cabecera);
+		
+		daoDetalleFactura.insert(detalle);
+		
 		}
 	}
 

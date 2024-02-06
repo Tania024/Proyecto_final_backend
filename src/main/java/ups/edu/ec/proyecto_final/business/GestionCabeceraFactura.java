@@ -10,7 +10,7 @@ import ups.edu.ec.proyecto_final.model.CabeceraFactura;
 @Stateless
 public class GestionCabeceraFactura {
 
-    @Inject
+	@Inject
     private CabeceraFacturaDAO daoCabeceraFactura;
 
     public void guardarFactura(CabeceraFactura cabecerafactura) throws Exception {
@@ -24,8 +24,8 @@ public class GestionCabeceraFactura {
 
         CabeceraFactura fac = daoCabeceraFactura.read(cabecerafactura.getCab_codigo());
         if (fac != null) {
-            fac.getDetalles().clear();
-            fac.getDetalles().addAll(cabecerafactura.getDetalles());
+            //fac.getDetalles().clear();
+            //fac.getDetalles().addAll(cabecerafactura.getDetalles());
             fac.setCab_total(cabecerafactura.getCab_total());
             fac.setCab_fecha(cabecerafactura.getCab_fecha());
             daoCabeceraFactura.update(fac);

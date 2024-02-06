@@ -9,57 +9,63 @@ import ups.edu.ec.proyecto_final.model.DetalleFactura;
 
 @Stateless
 public class GestionDetalleFactura {
+	 @Inject
+	    private DetalleFacturaDAO daoDetalleFactura;
 
-    @Inject
-    private DetalleFacturaDAO daoDetalleFactura;
+	    public void guardarDetalleFactura(DetalleFactura detalleFactura) throws Exception {
+	        // Validaciones básicas
+	        if (detalleFactura.getDet_precio() <= 0) {
+	            throw new Exception("Precio debe ser mayor que cero");
+	        }
+	        if (detalleFactura.getDet_cantidad() <= 0) {
+	            throw new Exception("Cantidad debe ser mayor que cero");
+	        }
 
-    public void guardarDetalleFactura(DetalleFactura detalleFactura) throws Exception {
-        // Validaciones básicas
-        if (detalleFactura.getDet_precio() <= 0) {
-            throw new Exception("Precio debe ser mayor que cero");
-        }
-        if (detalleFactura.getDet_cantidad() <= 0) {
-            throw new Exception("Cantidad debe ser mayor que cero");
-        }
+	        if (detalleFactura.getDet_codigo() > 0) {
+	            // Si el código es mayor que cero, se intenta actualizar
+	            DetalleFactura df = daoDetalleFactura.read(detalleFactura.getDet_codigo());
+	            if (df != null) {
+	                df.setDet_cantidad(detalleFactura.getDet_cantidad());
+	                df.setDet_precio(detalleFactura.getDet_precio());
+	                // Asegurarse de establecer la relación con CabeceraFactura y Producto
+	                df.setCabeceraFactura(detalleFactura.getCabeceraFactura());
+	                df.setProducto(detalleFactura.getProducto());
+	                df.setCliente(detalleFactura.getCliente());
+	                daoDetalleFactura.update(df);
+	                return;
+	            }
+	        }
 
-        DetalleFactura df = daoDetalleFactura.read(detalleFactura.getDet_codigo());
-        if (df != null) {
-            df.setDet_cantidad(detalleFactura.getDet_cantidad());
-            df.setDet_precio(detalleFactura.getDet_precio());
+	        // Si el código es cero o no se encontró el detalle, se inserta uno nuevo
+	        daoDetalleFactura.insert(detalleFactura);
+	    }
 
-            daoDetalleFactura.update(df);
+	    public void actualizarDetalleFactura(DetalleFactura detalleFactura) throws Exception {
+	        // Validaciones básicas
+	        if (detalleFactura.getDet_precio() <= 0) {
+	            throw new Exception("Precio debe ser mayor que cero");
+	        }
+	        if (detalleFactura.getDet_cantidad() <= 0) {
+	            throw new Exception("Cantidad debe ser mayor que cero");
+	        }
 
-        } else {
-            daoDetalleFactura.insert(detalleFactura);
-        }
-    }
+	        DetalleFactura df = daoDetalleFactura.read(detalleFactura.getDet_codigo());
+	        if (df != null) {
+	            daoDetalleFactura.update(detalleFactura);
+	        } else {
+	            throw new Exception("DetalleFactura no existe");
+	        }
+	    }
 
-    public void actualizarDetalleFactura(DetalleFactura detalleFactura) throws Exception {
-        // Validaciones básicas
-        if (detalleFactura.getDet_precio() <= 0) {
-            throw new Exception("Precio debe ser mayor que cero");
-        }
-        if (detalleFactura.getDet_cantidad() <= 0) {
-            throw new Exception("Cantidad debe ser mayor que cero");
-        }
+	    public DetalleFactura getDetalleFacturaPorCodigo(int det_codigo) throws Exception {
+	        return daoDetalleFactura.read(det_codigo);
+	    }
 
-        DetalleFactura df = daoDetalleFactura.read(detalleFactura.getDet_codigo());
-        if (df != null) {
-            daoDetalleFactura.update(detalleFactura);
-        } else {
-            throw new Exception("DetalleFactura no existe");
-        }
-    }
+	    public void borrarDetalleFactura(int det_codigo) {
+	        daoDetalleFactura.remove(det_codigo);
+	    }
 
-    public DetalleFactura getDetalleFacturaPorCodigo(int det_codigo) throws Exception {
-        return daoDetalleFactura.read(det_codigo);
-    }
-
-    public void borrarDetalleFactura(int det_codigo) {
-        daoDetalleFactura.remove(det_codigo);
-    }
-
-    public List<DetalleFactura> getDetallesFactura() {
-        return daoDetalleFactura.getAll();
-    }
+	    public List<DetalleFactura> getDetallesFactura() {
+	        return daoDetalleFactura.getAll();
+	    }
 }

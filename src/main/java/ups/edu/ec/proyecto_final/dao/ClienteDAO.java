@@ -5,6 +5,7 @@ import java.util.List;
 
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
 import ups.edu.ec.proyecto_final.model.Cliente;
@@ -36,7 +37,9 @@ public class ClienteDAO implements Serializable {
     public void remove(int cli_codigo) {
         try {
             Cliente cliente = em.find(Cliente.class, cli_codigo);
-            em.remove(cliente);
+            if (cliente != null) {
+                em.remove(cliente);
+            }
         } catch (Exception e) {
             e.printStackTrace();
             // Puedes manejar la excepción de una manera específica para tu aplicación.
@@ -55,7 +58,8 @@ public class ClienteDAO implements Serializable {
 
     public List<Cliente> getAll() {
         try {
-            TypedQuery<Cliente> query = em.createQuery("SELECT c FROM Cliente c", Cliente.class);
+            String jpql = "SELECT c FROM Cliente c";
+            TypedQuery<Cliente> query = em.createQuery(jpql, Cliente.class);
             return query.getResultList();
         } catch (Exception e) {
             e.printStackTrace();
@@ -64,12 +68,15 @@ public class ClienteDAO implements Serializable {
         }
     }
 
-    public Cliente getClientePorCedula(String cli_cedula) {
+    public Cliente getClientePorUsuario(String cli_usuario) {
         try {
-            TypedQuery<Cliente> query = em.createQuery("SELECT c FROM Cliente c WHERE c.cli_cedula = :cedula", Cliente.class);
-            query.setParameter("cedula", cli_cedula);
-            List<Cliente> clientes = query.getResultList();
-            return clientes.isEmpty() ? null : clientes.get(0);
+            String jpql = "SELECT c FROM Cliente c WHERE c.cli_usuario = :cli_usuario";
+            TypedQuery<Cliente> query = em.createQuery(jpql, Cliente.class);
+            query.setParameter("cli_usuario", cli_usuario);  // Corregido el nombre del parámetro
+            return query.getSingleResult(); // Utiliza getSingleResult() si esperas un solo resultado
+        } catch (NoResultException e) {
+            // Maneja el caso cuando no se encuentra ningún cliente con el usuario proporcionado
+            return null;
         } catch (Exception e) {
             e.printStackTrace();
             // Puedes manejar la excepción de una manera específica para tu aplicación.

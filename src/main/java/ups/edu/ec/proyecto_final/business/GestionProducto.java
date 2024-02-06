@@ -2,13 +2,14 @@ package ups.edu.ec.proyecto_final.business;
 
 import java.util.List;
 
+import jakarta.ejb.Stateless;
 import jakarta.inject.Inject;
 import ups.edu.ec.proyecto_final.dao.ProductoDAO;
 import ups.edu.ec.proyecto_final.model.Producto;
 
+@Stateless
 public class GestionProducto {
-
-    @Inject
+	@Inject
     private ProductoDAO daoProducto;
 
     public void guardarProducto(Producto producto) throws Exception {

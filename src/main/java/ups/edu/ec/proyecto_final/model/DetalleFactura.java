@@ -8,7 +8,7 @@ import jakarta.persistence.ManyToOne;
 
 @Entity
 public class DetalleFactura implements Serializable {
-    
+
     @Id
     private int det_codigo;
     private double det_precio;

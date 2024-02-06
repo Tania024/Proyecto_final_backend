@@ -18,6 +18,7 @@ import ups.edu.ec.proyecto_final.business.GestionProducto;
 import ups.edu.ec.proyecto_final.model.Producto;
 
 @Path("productos")
+
 public class ProductoServices {
 
     @Inject
@@ -68,8 +69,8 @@ public class ProductoServices {
     }
 
     @DELETE
-    @Produces(MediaType.APPLICATION_JSON)
-    public String borrar(@QueryParam("id") int pro_codigo) {
+	@Path("elim/{pro_codigo}")
+    public String borrar(@PathParam("pro_codigo") int pro_codigo) {
         try {
             gProducto.borrarProducto(pro_codigo);
             return "OK";

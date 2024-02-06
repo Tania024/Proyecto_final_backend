@@ -2,13 +2,16 @@ package ups.edu.ec.proyecto_final.services;
 
 import java.util.List;
 
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.inject.Named;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
@@ -17,6 +20,8 @@ import ups.edu.ec.proyecto_final.business.GestionCabeceraFactura;
 import ups.edu.ec.proyecto_final.model.CabeceraFactura;
 
 @Path("cabeceraFacturas")
+@Named
+@ApplicationScoped
 public class CabeceraFacturaServices {
 
     @Inject
@@ -54,7 +59,8 @@ public class CabeceraFacturaServices {
 
     @DELETE
     @Produces(MediaType.APPLICATION_JSON)
-    public String borrar(@QueryParam("id") int cab_codigo) {
+	@Path("elim/{cab_codigo}")
+    public String borrar(@PathParam("cab_codigo") int cab_codigo) {
         try {
             gFactura.borrarFactura(cab_codigo);
             return "OK";
@@ -65,7 +71,8 @@ public class CabeceraFacturaServices {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response leer(@QueryParam("codigo") int cab_codigo) {
+    @Path("/{cab_codigo}")
+    public Response leer(@PathParam("cab_codigo") int cab_codigo) {
         try {
             CabeceraFactura fac = gFactura.getFacturaPorCodigo(cab_codigo);
             return Response.ok(fac).build();

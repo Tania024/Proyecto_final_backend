@@ -9,87 +9,51 @@ import ups.edu.ec.proyecto_final.model.Cliente;
 
 @Stateless
 public class GestionCliente {
-
-    @Inject
+	@Inject
     private ClienteDAO daoCliente;
 
-    public void guardarClientes(Cliente cliente) throws Exception {
-        // Validaciones básicas
-        if (cliente.getCli_cedula().length() != 10) {
-            throw new Exception("Cédula incorrecta");
-        }
-        if (!"activo".equals(cliente.getCli_estado()) && !"inactivo".equals(cliente.getCli_estado())) {
-            throw new Exception("Estado no válido");
-        }
-        if (!isValidPassword(cliente.getCli_contrasena())) {
-            throw new Exception("Formato de contraseña incorrecto");
-        }
-
-        Cliente cli = daoCliente.getClientePorCedula(cliente.getCli_cedula());
+    public void guardarClientes(Cliente cliente) {
+        Cliente cli = daoCliente.getClientePorUsuario(cliente.getCli_cedula());
+        
         if (cli != null) {
             // Cliente existente, actualizamos
-            if ("activo".equals(cli.getCli_estado())) {
-                daoCliente.update(cliente);
-            } else {
-                throw new Exception("Cliente inactivo, no se puede actualizar");
-            }
+            cli.setCli_nombre(cliente.getCli_nombre());
+            cli.setCli_apellido(cliente.getCli_apellido());
+            cli.setCli_direccion(cliente.getCli_direccion());
+            cli.setCli_telefono(cliente.getCli_telefono());
+            cli.setCli_estado(cliente.getCli_estado());
+            cli.setCli_usuario(cliente.getCli_usuario());
+            cli.setCli_contrasena(cliente.getCli_contrasena());
+            daoCliente.update(cli);
         } else {
             // Nuevo cliente, insertamos
+            cliente.setCli_estado("inactivo");
             daoCliente.insert(cliente);
         }
     }
 
-    public void actualizarCliente(Cliente cliente) throws Exception {
-        // Validaciones básicas
-        if (cliente.getCli_cedula().length() != 10) {
-            throw new Exception("Cédula incorrecta");
-        }
-        if (!"activo".equals(cliente.getCli_estado()) && !"inactivo".equals(cliente.getCli_estado())) {
-            throw new Exception("Estado no válido");
-        }
-        if (!isValidPassword(cliente.getCli_contrasena())) {
-            throw new Exception("Formato de contraseña incorrecto");
-        }
 
-        Cliente cli = daoCliente.getClientePorCedula(cliente.getCli_cedula());
+    public void actualizarCliente(Cliente cliente) {
+        Cliente cli = daoCliente.getClientePorUsuario(cliente.getCli_cedula());
         if (cli != null) {
             // Cliente existente, actualizamos
-            if ("activo".equals(cli.getCli_estado())) {
-                daoCliente.update(cliente);
-            } else {
-                throw new Exception("Cliente inactivo, no se puede actualizar");
-            }
+            daoCliente.update(cliente);
         } else {
-            throw new Exception("Cliente no existe");
+            throw new RuntimeException("Cliente no existe");
         }
     }
 
-    public Cliente getPorCodigo(String cli_cedula) throws Exception {
-        // Validaciones básicas
-        if (cli_cedula.length() != 10) {
-            throw new Exception("Cédula incorrecta");
-        }
-
-        Cliente cliente = daoCliente.getClientePorCedula(cli_cedula);
-        if (cliente == null) {
-            throw new Exception("Cliente no encontrado");
-        }
-        return cliente;
+    public Cliente getPorUsuario(String cli_usuario) {
+        return daoCliente.getClientePorUsuario(cli_usuario);
     }
 
     public void borrarCliente(int cli_codigo) {
-        // No se realiza validación de existencia ya que el método remove del DAO
-        // manejará el caso de un cliente inexistente.
         daoCliente.remove(cli_codigo);
     }
+
 
     public List<Cliente> getClientes() {
         return daoCliente.getAll();
     }
-
-    private boolean isValidPassword(String password) {
-        // Puedes implementar aquí tu lógica de validación de contraseña
-        // Por ejemplo, longitud mínima, caracteres especiales, etc.
-        return password.length() >= 8;
-    }
+    
 }

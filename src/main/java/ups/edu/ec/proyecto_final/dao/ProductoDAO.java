@@ -34,11 +34,13 @@ public class ProductoDAO implements Serializable {
             // Puedes manejar la excepción de una manera específica para tu aplicación.
         }
     }
-
+    
     public void remove(int pro_codigo) {
         try {
-            Producto producto = em.find(Producto.class, pro_codigo);
-            em.remove(producto);
+        	Producto producto = em.find(Producto.class, pro_codigo);
+            if (producto != null) {
+                em.remove(producto);
+            }
         } catch (Exception e) {
             e.printStackTrace();
             // Puedes manejar la excepción de una manera específica para tu aplicación.
@@ -57,7 +59,7 @@ public class ProductoDAO implements Serializable {
 
     public List<Producto> getAll() {
         try {
-            TypedQuery<Producto> query = em.createQuery("SELECT p FROM Producto p WHERE p.pro_estado = 'activo'", Producto.class);
+            TypedQuery<Producto> query = em.createQuery("SELECT p FROM Producto p", Producto.class);
             return query.getResultList();
         } catch (Exception e) {
             e.printStackTrace();
@@ -65,5 +67,4 @@ public class ProductoDAO implements Serializable {
             return null;
         }
     }
-
 }
