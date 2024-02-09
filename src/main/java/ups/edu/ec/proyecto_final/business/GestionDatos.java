@@ -124,13 +124,13 @@ public class GestionDatos {
 		
 		daoCabeceraFactura.insert(cabecera);
 		DetalleFactura detalle = new DetalleFactura();
-		detalle.setDet_codigo(1);
+		//detalle.setDet_codigo(1);
 		detalle.setDet_cantidad(2);
 		detalle.setDet_precio(13);
 		detalle.setDet_subtotal(20);
 		detalle.setProducto(producto);
 		detalle.setCliente(cliente);
-		detalle.setCabeceraFactura(cabecera);
+		//detalle.setCabeceraFactura(cabecera);
 		
 		daoDetalleFactura.insert(detalle);
 		

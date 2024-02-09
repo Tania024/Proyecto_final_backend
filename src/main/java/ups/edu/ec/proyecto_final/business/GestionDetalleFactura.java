@@ -28,7 +28,7 @@ public class GestionDetalleFactura {
 	                df.setDet_cantidad(detalleFactura.getDet_cantidad());
 	                df.setDet_precio(detalleFactura.getDet_precio());
 	                // Asegurarse de establecer la relación con CabeceraFactura y Producto
-	                df.setCabeceraFactura(detalleFactura.getCabeceraFactura());
+	                //df.setCabeceraFactura(detalleFactura.getCabeceraFactura());
 	                df.setProducto(detalleFactura.getProducto());
 	                df.setCliente(detalleFactura.getCliente());
 	                daoDetalleFactura.update(df);
@@ -61,6 +61,17 @@ public class GestionDetalleFactura {
 	        return daoDetalleFactura.read(det_codigo);
 	    }
 
+	    public List<DetalleFactura> obtenerDetallesFacturaPorCliente(int cliCodigo) {
+	        try {
+	            // Implementa la lógica para obtener los detalles de factura por cliente
+	            return daoDetalleFactura.obtenerDetallesFacturaPorCliente(cliCodigo);
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	            // Puedes manejar la excepción de una manera específica para tu aplicación.
+	            return null;
+	        }
+	    }
+	    
 	    public void borrarDetalleFactura(int det_codigo) {
 	        daoDetalleFactura.remove(det_codigo);
 	    }

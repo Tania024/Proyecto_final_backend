@@ -45,6 +45,21 @@ public class DetalleFacturaDAO implements Serializable {
             return null;
         }
     }
+    
+    public List<DetalleFactura> obtenerDetallesFacturaPorCliente(int cliCodigo) {
+        try {
+            // Implementa la lógica para obtener los detalles de factura por cliente
+            String jpql = "SELECT d FROM DetalleFactura d JOIN d.cliente c WHERE c.cli_codigo = :cliCodigo";
+            Query q = em.createQuery(jpql, DetalleFactura.class);
+            q.setParameter("cliCodigo", cliCodigo);
+            return q.getResultList();
+        } catch (Exception e) {
+            e.printStackTrace();
+            // Puedes manejar la excepción de una manera específica para tu aplicación.
+            return null;
+        }
+    }
+
 
     public DetalleFactura getDetalleFactura(int det_codigo) {
         try {

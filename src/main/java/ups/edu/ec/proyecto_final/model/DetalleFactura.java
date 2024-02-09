@@ -3,6 +3,8 @@ package ups.edu.ec.proyecto_final.model;
 import java.io.Serializable;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 
@@ -10,6 +12,7 @@ import jakarta.persistence.ManyToOne;
 public class DetalleFactura implements Serializable {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int det_codigo;
     private double det_precio;
     private int det_cantidad;
@@ -18,8 +21,8 @@ public class DetalleFactura implements Serializable {
     @ManyToOne
     private Producto producto;
 
-    @ManyToOne
-    private CabeceraFactura cabeceraFactura;
+    //@ManyToOne
+    //private CabeceraFactura cabeceraFactura;
 
     @ManyToOne
     private Cliente cliente;
@@ -64,13 +67,13 @@ public class DetalleFactura implements Serializable {
         this.producto = producto;
     }
 
-    public CabeceraFactura getCabeceraFactura() {
+    /*public CabeceraFactura getCabeceraFactura() {
         return cabeceraFactura;
     }
 
     public void setCabeceraFactura(CabeceraFactura cabeceraFactura) {
         this.cabeceraFactura = cabeceraFactura;
-    }
+    }*/
 
     public Cliente getCliente() {
         return cliente;

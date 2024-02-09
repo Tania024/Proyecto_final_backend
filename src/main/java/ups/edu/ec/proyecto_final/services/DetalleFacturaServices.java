@@ -31,6 +31,7 @@ public class DetalleFacturaServices {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Response crear(DetalleFactura detalleFactura) {
+    	
         try {
             DetalleFactura existingDetalle = gDetalleFactura.getDetalleFacturaPorCodigo(detalleFactura.getDet_codigo());
 
@@ -69,31 +70,34 @@ public class DetalleFacturaServices {
     }
 
     @DELETE
-    @Produces(MediaType.APPLICATION_JSON)
-	@Path("elim/{det_codigo}")
-    public String borrar(@PathParam("det_codigo") int det_codigo) {
-        try {
-            gDetalleFactura.borrarDetalleFactura(det_codigo);
-            return "OK";
-        } catch (Exception e) {
-            return "Error";
-        }
+    @Path("elim/{det_codigo}")
+    public Response borrar(@PathParam("det_codigo") int det_codigo) {
+    	try {
+    		gDetalleFactura.borrarDetalleFactura(det_codigo);
+			return Response.status(Response.Status.OK).entity("Detalle eliminado").build();
+		} catch (Exception e) {
+			e.printStackTrace();
+			Error error = new Error();
+			return Response.status(Response.Status.OK).entity(error).build();
+		}
     }
 
+
     @GET
+    @Path("/cliente/{cliCodigo}")
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("/{det_codigo}")
-    public Response leer(@PathParam("det_codigo") int det_codigo) {
-        try {
-            DetalleFactura detalleFactura = gDetalleFactura.getDetalleFacturaPorCodigo(det_codigo);
-            return Response.ok(detalleFactura).build();
-        } catch (Exception e) {
-            ErrorMessage error = new ErrorMessage(4, "DetalleFactura no existe");
+    public Response obtenerDetallesFacturaPorCliente(@PathParam("cliCodigo") int cliCodigo) {
+        List<DetalleFactura> detallesFactura = gDetalleFactura.obtenerDetallesFacturaPorCliente(cliCodigo);
+        if (detallesFactura != null && !detallesFactura.isEmpty()) {
+            return Response.ok(detallesFactura).build();
+        } else {
+            ErrorMessage error = new ErrorMessage(6, "No se encontraron detalles de factura para el cliente");
             return Response.status(Response.Status.NOT_FOUND)
                     .entity(error)
                     .build();
         }
     }
+
 
     @GET
     @Path("list")
