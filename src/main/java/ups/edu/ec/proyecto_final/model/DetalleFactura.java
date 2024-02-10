@@ -21,8 +21,8 @@ public class DetalleFactura implements Serializable {
     @ManyToOne
     private Producto producto;
 
-    //@ManyToOne
-    //private CabeceraFactura cabeceraFactura;
+    @ManyToOne
+    private CabeceraFactura cabeceraFactura;
 
     @ManyToOne
     private Cliente cliente;
@@ -67,13 +67,13 @@ public class DetalleFactura implements Serializable {
         this.producto = producto;
     }
 
-    /*public CabeceraFactura getCabeceraFactura() {
+    public CabeceraFactura getCabeceraFactura() {
         return cabeceraFactura;
     }
 
     public void setCabeceraFactura(CabeceraFactura cabeceraFactura) {
         this.cabeceraFactura = cabeceraFactura;
-    }*/
+    }
 
     public Cliente getCliente() {
         return cliente;

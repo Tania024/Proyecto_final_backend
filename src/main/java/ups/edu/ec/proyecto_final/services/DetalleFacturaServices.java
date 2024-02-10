@@ -20,8 +20,6 @@ import ups.edu.ec.proyecto_final.business.GestionDetalleFactura;
 import ups.edu.ec.proyecto_final.model.DetalleFactura;
 
 @Path("detalleFacturas")
-@Named
-@ApplicationScoped
 public class DetalleFacturaServices {
 
     @Inject
@@ -74,7 +72,7 @@ public class DetalleFacturaServices {
     public Response borrar(@PathParam("det_codigo") int det_codigo) {
     	try {
     		gDetalleFactura.borrarDetalleFactura(det_codigo);
-			return Response.status(Response.Status.OK).entity("Detalle eliminado").build();
+			return Response.status(Response.Status.OK).build();
 		} catch (Exception e) {
 			e.printStackTrace();
 			Error error = new Error();

@@ -20,8 +20,6 @@ import ups.edu.ec.proyecto_final.business.GestionCabeceraFactura;
 import ups.edu.ec.proyecto_final.model.CabeceraFactura;
 
 @Path("cabeceraFacturas")
-@Named
-@ApplicationScoped
 public class CabeceraFacturaServices {
 
     @Inject

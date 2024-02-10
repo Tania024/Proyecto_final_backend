@@ -22,8 +22,8 @@ public class CabeceraFactura implements Serializable {
     @ManyToOne
     private Cliente cliente;
 
-    /*@OneToMany(mappedBy = "cabeceraFactura")
-    private List<DetalleFactura> detalles;*/
+    @OneToMany(mappedBy = "cabeceraFactura")
+    private List<DetalleFactura> detalles;
 
     public int getCab_codigo() {
         return cab_codigo;
